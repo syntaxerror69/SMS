@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        input,
+        select {
+            width: 100%;
+            border: 1px solid #eee;
+            padding: 10px 5px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="bg-blue-700 p-5 text-white text-2xl"> Student Management System</h1>
+    <div class="flex">
+        
+        <div class="w-1/4 ">
+            
+            <div class="bg-blue-400 p-3  border">
+                <form action="" method="post" class=" flex flex-col gap-5 p-3 rounded-lg">
+                    {% csrf_token %}
+                    {{ form.as_p}}
+
+                    <input type="submit" value="Create record"
+                        class="bg-teal-500 flex-1 hover:bg-teal-800 p-2 rounded shadow">
+                </form>
+            </div>
+        </div>
+        <div class="w-3/4 p-10">
+            <div class="flex my-5 justify-between items-center">
+                <h2 class="text-3xl font-semibold">Manage Record</h2>
+                <form action="{% url 'filter'%}" method="get">
+                    <select onchange="this.form.submit();" name="city" id="" class="w-36 border border-slate-600 rounded-lg">
+                        <option value="selected disabled">Select City</option>
+                        <option value="Purnea">Purnea</option>
+                        <option value="Patna">Patna</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Kolkata">Kolkata</option>
+                        <option value="Ahmadabad">Ahmadabad</option>
+                    </select>
+                </form>
+                <form action="{% url 'search' %}" method="get" class="flex gap-0 justify-center">
+                    <input type="search" name="search" class="border border-slate-400 outline-0 rounded-l-lg" placeholder="Search Here">
+                    <input type="submit" class="bg-red-600 text-white py-2 rounded-r-lg outline-0 border-0 w-12" value="GO" >
+                    
+                </form>
+            </div>
+            <table class="w-full">
+                <tr>
+                    <th class="border">id</th>
+                    <th class="border">name</th>
+                    <th class="border">profession</th>
+                    <th class="border">contact</th>
+                    <th class="border">city</th>
+
+                    <th class="border">action</th>
+                </tr>
+                {% for std in students %}
+                <tr>
+                    <td class="p-3 border">{{ std.id }}</td>
+                    <td class="p-3 border">{{ std.name}}</td>
+                    <td class="p-3 border">{{ std.profession}}</td>
+                    <td class="p-3 border">{{ std.contact}}</td>
+                    <td class="p-3 border">{{ std.city}}</td>
+
+                    <td class="p-3 border">
+                        <a href="{% url 'delete' std.id %}" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-800 ">Delete</a>
+                        <a href="{% url 'edit' std.id %}" class="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-800 ">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
